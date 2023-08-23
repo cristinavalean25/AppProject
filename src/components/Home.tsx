@@ -3,6 +3,7 @@ import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from '../types/RootStackParamList';
 import Navbar from './Navbar';
 import AddProduct from '../produse/AddProduct';
+import Products from '../produse/Products';
 
 export type HomeProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Home'>;
@@ -21,6 +22,7 @@ function Home({navigation}: HomeProps) {
           style={backgroundStyle}>
           <Navbar navigation={navigation} />
           <AddProduct />
+          <Products />
         </ScrollView>
       </View>
     </SafeAreaView>

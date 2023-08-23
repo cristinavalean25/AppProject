@@ -1,60 +1,34 @@
-import React from 'react';
-import {View, Text} from 'react-native';
-import {useSelector} from 'react-redux';
+import React, {useEffect, useState} from 'react';
+import {View, Text, FlatList} from 'react-native';
+
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+};
 
 const ProductList = () => {
-  const products = useSelector(state => state.products);
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    fetch('http://localhost:3000/products')
+      .then(response => response.json())
+      .then((data: Product[]) => setProducts(data))
+      .catch(error => console.error('Eroare:', error));
+  }, []);
 
   return (
     <View>
-      {products.map(
-        (product: {
-          id: React.Key | null | undefined;
-          title:
-            | string
-            | number
-            | boolean
-            | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-            | Iterable<React.ReactNode>
-            | React.ReactPortal
-            | null
-            | undefined;
-          category:
-            | string
-            | number
-            | boolean
-            | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-            | Iterable<React.ReactNode>
-            | React.ReactPortal
-            | null
-            | undefined;
-          price:
-            | string
-            | number
-            | boolean
-            | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-            | Iterable<React.ReactNode>
-            | React.ReactPortal
-            | null
-            | undefined;
-          description:
-            | string
-            | number
-            | boolean
-            | React.ReactElement<any, string | React.JSXElementConstructor<any>>
-            | Iterable<React.ReactNode>
-            | React.ReactPortal
-            | null
-            | undefined;
-        }) => (
-          <View key={product.id}>
-            <Text>Title: {product.title}</Text>
-            <Text>Category: {product.category}</Text>
-            <Text>Price: {product.price}</Text>
-            <Text>Description: {product.description}</Text>
-          </View>
-        ),
-      )}
+      <Text>Lista Produse</Text>
+      <FlatList
+        data={products}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({item}) => (
+          <Text>
+            {item.name} - {item.price} RON
+          </Text>
+        )}
+      />
     </View>
   );
 };
